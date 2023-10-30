@@ -2,7 +2,6 @@ package jm.task.core.jdbc.dao;
 
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,15 +14,15 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
     }
 
     public void createUsersTable() {
-        PreparedStatement preparedStatement = null;
+        Statement statement = null;
         final String sqlQuery = "CREATE TABLE User (id int NOT NULL UNIQUE AUTO_INCREMENT, name VARCHAR(255), lastName VARCHAR(255), age int)";
 
         try {
             DatabaseMetaData md = connection.getMetaData();
             ResultSet rs = md.getTables(null, "idea", "User", new String[] {"table"});
             if (!rs.next()) {
-                preparedStatement = connection.prepareStatement(sqlQuery);
-                preparedStatement.executeUpdate();
+                statement = connection.createStatement();
+                statement.executeUpdate(sqlQuery);
                 System.out.println("Таблица создана");
             } else {
                 System.out.println("Таблица уже существует");
@@ -31,9 +30,9 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
         } catch (SQLException e) {
             System.out.println("Таблица в базе данных не создана");
         } finally {
-            if (preparedStatement != null) {
+            if (statement != null) {
                 try {
-                    preparedStatement.close();
+                    statement.close();
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
@@ -42,7 +41,7 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
     }
 
     public void dropUsersTable() {
-        PreparedStatement preparedStatement = null;
+        Statement statement = null;
         final String sqlQuery = "DROP TABLE idea.user";
 
         try {
@@ -50,8 +49,8 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
             ResultSet rs = md.getTables(null, "idea", "User", new String[] {"table"});
             if (rs.next()) {
                 System.out.println("Таблица существует и будет удалена");
-                preparedStatement = connection.prepareStatement(sqlQuery);
-                preparedStatement.executeUpdate();
+                statement = connection.createStatement();
+                statement.executeUpdate(sqlQuery);
                 System.out.println("Таблица удалена");
             } else {
                 System.out.println("Таблица не удалена");
@@ -59,9 +58,9 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
         } catch (SQLException e) {
             System.out.println("Таблица  не удалена");
         } finally {
-            if (preparedStatement != null) {
+            if (statement != null) {
                 try {
-                    preparedStatement.close();
+                    statement.close();
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
@@ -144,23 +143,23 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
     }
 
     public void cleanUsersTable() {
-        PreparedStatement preparedStatement = null;
+        Statement statement = null;
         final String sqlQuery = "DELETE FROM idea.user";
         try {
             DatabaseMetaData md = connection.getMetaData();
             ResultSet rs = md.getTables(null, "idea", "User", new String[] {"table"});
             if (rs.next()) {
-                preparedStatement = connection.prepareStatement(sqlQuery);
+                statement = connection.createStatement();
                 System.out.println("Таблица существует и будет отчищена");
-                preparedStatement.executeUpdate();
+                statement.executeUpdate(sqlQuery);
                 System.out.println("Таблица отчищена");
             }
         } catch (SQLException e) {
             System.out.println("Таблица не отчищена");
         } finally {
-            if (preparedStatement != null) {
+            if (statement != null) {
                 try {
-                    preparedStatement.close();
+                    statement.close();
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
