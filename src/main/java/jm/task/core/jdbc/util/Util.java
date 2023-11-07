@@ -1,16 +1,12 @@
 package jm.task.core.jdbc.util;
 
 import jm.task.core.jdbc.model.User;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Properties;
 
 public class Util {
@@ -21,19 +17,6 @@ public class Util {
     private static final String DB_USERNAME = "root";
     private static final String DB_PASS = "kp0kyc86ufsin";
     private static final String DB_DIALECT = "org.hibernate.dialect.MySQL5Dialect";
-
-    //JDBC connection
-    public Connection getConnection() {
-        Connection connection = null;
-        try {
-            connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASS);
-            Class.forName(DB_DRIVER);
-            System.out.println("Database connected!");
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new IllegalStateException("Cannot connect the database!", e);
-        }
-        return connection;
-    }
 
     //Hibernate connection
     public static SessionFactory getSessionFactory() {
@@ -52,7 +35,7 @@ public class Util {
 
                 settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
 
-//                settings.put(Environment.HBM2DDL_AUTO, "update");
+                settings.put(Environment.HBM2DDL_AUTO, "none");
 
                 configuration.setProperties(settings);
 

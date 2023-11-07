@@ -16,9 +16,9 @@ public class Main {
         userService.saveUser("Java", "Mentor", (byte) 8);
         userService.cleanUsersTable();
         System.out.println(userService.getAllUsers());
-//        userService.cleanUsersTable();
+        userService.cleanUsersTable();
         userService.dropUsersTable();
-//        userService.removeUserById(4);
+        userService.removeUserById(4);
 
 
     }
